@@ -22,12 +22,22 @@ public class LogAnalyzer
         // Create the reader to obtain the data.
         reader = new LogfileReader("demo.log");
     }
+    
+    public LogAnalyzer(String logFile)
+    { 
+        // Create the array object to hold the hourly
+        // access counts.
+        hourCounts = new int[24];
+        // Create the reader to obtain the data.
+        reader = new LogfileReader(logFile);
+    }
 
     /**
      * Analyze the hourly access data from the log file.
      */
     public void analyzeHourlyData()
     {
+        reader.reset();
         while(reader.hasNext()) {
             LogEntry entry = reader.next();
             int hour = entry.getHour();
@@ -54,5 +64,54 @@ public class LogAnalyzer
     public void printData()
     {
         reader.printData();
+    }
+    
+    public int numberOfAccesses()
+    {
+        int total = 0;
+        for (int position = 0; position<24; position++)
+        {
+            total = total + hourCounts[position];
+        }
+        return total;
+    }
+    
+    public int busiestHour()
+    {
+        int busyHour = 0;
+        for (int position = 1; position<24; position++)
+        {
+            if (hourCounts[position] > hourCounts[busyHour])
+            {
+                busyHour = position;
+            }
+        }
+        return busyHour;
+    }
+    
+    public int quietestHour()
+    {
+        int quietHour = 0;
+        for (int position = 1; position<24; position++)
+        {
+            if (hourCounts[position] < hourCounts[quietHour])
+            {
+                quietHour = position;
+            }
+        }
+        return quietHour;
+    }
+    
+    public int busiestTwoHour()
+    {
+        int busyTwoHour = 0;
+        for (int position = 1; position<24; position++)
+        {
+            if (hourCounts[position] > hourCounts[busyTwoHour])
+            {
+                busyTwoHour = position;
+            }
+        }
+        return busyTwoHour;
     }
 }
