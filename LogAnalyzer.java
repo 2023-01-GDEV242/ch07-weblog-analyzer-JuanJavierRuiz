@@ -105,12 +105,18 @@ public class LogAnalyzer
     public int busiestTwoHour()
     {
         int busyTwoHour = 0;
-        for (int position = 1; position<24; position++)
+        int totalbusyTwoHour = hourCounts[0] + hourCounts[1];
+        for (int position = 1; position<23; position++)
         {
-            if (hourCounts[position] > hourCounts[busyTwoHour])
+            if (hourCounts[position] + hourCounts [position + 1] > totalbusyTwoHour)
             {
                 busyTwoHour = position;
+                totalbusyTwoHour = hourCounts[position] + hourCounts [position + 1];
             }
+        }
+        if (hourCounts[23] + hourCounts[0] > totalbusyTwoHour)
+        {
+            busyTwoHour = 23;
         }
         return busyTwoHour;
     }
